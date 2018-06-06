@@ -2,6 +2,7 @@ package pro4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ import java.util.Scanner;
 
 public class Driver {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		int[][] theMatrix = getMatrix();
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		for (int i = 0; i < theMatrix[0].length; i++) {
@@ -37,11 +38,10 @@ public class Driver {
 		}
 
 		// Perform the traversal of the graph
-		System.out.println("DFS Traversal of a tree is:");
 		g.DFS();
 
-		System.out.println("\nBFS Traversal of a tree is:");
 		g.BFS();
+		g.out.close();
 
 	}
 

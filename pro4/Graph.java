@@ -1,15 +1,28 @@
 package pro4;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
 public class Graph {
+	public BufferedWriter out = null;
 	public Node root;
 	public ArrayList<Node> nodes = new ArrayList<Node>();
 	public int[][] matrix;// Edges will be represented as adjacency Matrix
 	int size;
+
+	public Graph() throws IOException {
+		try {
+			out = new BufferedWriter(new FileWriter("output.txt"));
+		} catch (FileNotFoundException ex) {
+			System.out.println("ERROR");
+		}
+	}
 
 	public void setRoot(Node n) {
 		this.root = n;
@@ -50,45 +63,47 @@ public class Graph {
 	}
 
 	// BFS traversal of a tree
-	public void BFS() {
+	public void BFS() throws IOException {
 
 		// BFS uses Queue data structure
 		Queue<Node> q = new LinkedList<Node>();
 		q.add(this.root);
-		printNode(this.root);
+		out.write("BFS: " + root.data + " ");
 		root.visited = true;
 		while (!q.isEmpty()) {
 			Node n = (Node) q.remove();
 			Node child = null;
 			while ((child = getUnvisitedChildNode(n)) != null) {
 				child.visited = true;
-				printNode(child);
+				out.write(n.data + " ");
 				q.add(child);
 			}
 		}
 		// Clear visited property of nodes for other method
+		out.newLine();
 		clearNodes();
 	}
 
 	// DFS traversal of a tree
-	public void DFS() {
+	public void DFS() throws IOException {
 		// DFS uses Stack data structure
 		Stack<Node> s = new Stack<Node>();
 		s.push(this.root);
 		root.visited = true;
-		printNode(root);
+		out.write("DFS: " + root.data + " ");
 		while (!s.isEmpty()) {
 			Node n = (Node) s.peek();
 			Node child = getUnvisitedChildNode(n);
 			if (child != null) {
 				child.visited = true;
-				printNode(child);
+				out.write(n.data + " ");
 				s.push(child);
 			} else {
 				s.pop();
 			}
 		}
 		// Clear visited property of nodes
+		out.newLine();
 		clearNodes();
 	}
 
@@ -100,11 +115,6 @@ public class Graph {
 			n.visited = false;
 			i++;
 		}
-	}
-
-	// Utility methods for printing the node's label
-	private void printNode(Node n) {
-		System.out.print(n.data + " ");
 	}
 
 }
